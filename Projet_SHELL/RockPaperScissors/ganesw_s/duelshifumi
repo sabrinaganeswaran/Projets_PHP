@@ -1,0 +1,49 @@
+#!/bin/bash
+rock2(){
+	if [ "$number" == 1 ]; then
+		echo -e "-> \033[0;32mEquality\033[0m"
+	elif [ "$number" == 2 ]; then
+		echo -e "-> \033[0;34m(AI) Paper covers Rock (You)\033[0m"
+		scorer=$(($scorer + 1))
+	else
+		echo -e "-> \033[0;33m(You) Rock crushes Scissors (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	fi
+}
+
+paper2(){
+	if [ "$number" == 1 ]; then
+		echo -e "-> \033[0;33m(You) Paper covers Rock (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	elif [ "$number" == 2 ]; then
+		echo -e "-> \033[0;32mEquality\033[0m"
+	else
+		echo -e "-> \033[0;34m(AI) Scissors cut Paper (You)\033[0m"
+		scorer=$(($scorer + 1))
+	fi
+}
+
+scissors2(){
+	if [ "$number" == 1 ]; then
+		echo -e "-> \033[0;34m(AI) Rock crushes Scissors (You)\033[0m"
+		scorer=$(($scorer + 1))
+	elif [ "$number" == 2 ]; then
+		echo -e "-> \033[0;33m(You) Scissors cut Paper (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	else
+		echo -e "-> \033[0;32mEquality\033[0m"
+	fi
+}
+
+calculscore2()
+{
+	number=$[($RANDOM % 3 + 1)]
+	echo -e " \033[0;34mAI's choice : $number\033[0m\n"
+	if [ "$valuej" == 1 ]; then
+		rock2
+	elif [ "$valuej" == 2 ]; then
+		paper2
+	else
+		scissors2
+	fi
+}

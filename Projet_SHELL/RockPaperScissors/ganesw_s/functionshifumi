@@ -1,0 +1,48 @@
+#!/bin/bash
+rock(){
+	if [ "$number" == 1 ]; then
+		echo -e "-> \033[0;32mEquality\033[0m"
+	elif [ "$number" == 2 ]; then
+		echo -e "-> \033[0;34m(AI) Paper covers Rock (You)\033[0m"
+	else
+		echo -e "-> \033[0;33m(You) Rock crushes Scissors (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	fi
+}
+
+paper(){
+	if [ "$number" == 1 ]; then
+		echo -e "-> \033[0;33m(You) Paper covers Rock (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	elif [ "$number" == 2 ]; then
+		echo -e "-> \033[0;32mEquality\033[0m"
+	else
+		echo -e "-> \033[0;34m(AI) Scissors cut Paper (You)\033[0m"
+	fi
+}
+
+scissors(){
+	if [ "$number" == 1 ]; then
+		echo -e "-> \033[0;34m(AI) Rock crushes Scissors (You)\033[0m"
+	elif [ "$number" == 2 ]; then
+		echo -e "-> \033[0;33m(You) Scissors cut Paper (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	else
+		echo -e "-> \033[0;32mEquality\033[0m"
+	fi
+}
+
+choixfinmenu(){
+	echo -e "\n 1- Menu"
+	echo -e " 2- Quit"
+	read -p "Choose : " choicefin
+	if [[ $choicefin == 1 ]]; then
+		clear
+		reset=0
+	elif [[ $choicefin == 2 ]]; then
+		quit
+	else
+		echo -e " 1 or 2"
+		choixfinmenu
+	fi
+}

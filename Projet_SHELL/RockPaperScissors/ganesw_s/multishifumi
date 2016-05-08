@@ -1,0 +1,71 @@
+#!/bin/bash
+rockmulti(){
+	if [ "$valuer" == 1 ]; then
+		echo -ne "\n \033[0;34m$joueur2 choice : Rock\033[0m\n"
+		echo -e "-> \033[0;32mEquality\033[0m"
+	elif [ "$valuer" == 2 ]; then
+		echo -ne "\n \033[0;34m$joueur2 choice : Paper\033[0m\n"
+		echo -e "-> \033[0;34m(AI) Paper covers Rock (You)\033[0m"
+		scorer=$(($scorer + 1))
+	else
+		echo -ne "\n \033[0;34m$joueur2 choice : Scissors\033[0m\n"
+		echo -e "-> \033[0;33m(You) Rock crushes Scissors (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	fi
+}
+
+papermulti(){
+	if [ "$valuer" == 1 ]; then
+		echo -ne "\n \033[0;33m$joueur2 choice : Rock\033[0m\n"
+		echo -e "-> \033[0;33m(You) Paper covers Rock (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	elif [ "$valuer" == 2 ]; then
+		echo -ne "\n \033[0;33m$joueur2 choice : Paper\033[0m\n"
+		echo -e "-> \033[0;32mEquality\033[0m"
+	else
+		echo -ne "\n \033[0;33m$joueur2 choice : Scissors\033[0m\n"
+		echo -e "-> \033[0;34m(AI) Scissors cut Paper (You)\033[0m"
+		scorer=$(($scorer + 1))
+	fi
+}
+
+scissorsmulti(){
+	if [ "$valuer" == 1 ]; then
+		echo -ne "\n \033[0;33m$joueur2 choice : Rock\033[0m\n"
+		echo -e "-> \033[0;34m(AI) Rock crushes Scissors (You)\033[0m"
+		scorer=$(($scorer + 1))
+	elif [ "$valuer" == 2 ]; then
+		echo -ne "\n \033[0;33m$joueur2 choice : Paper\033[0m\n"
+		echo -e "-> \033[0;33m(You) Scissors cut Paper (AI)\033[0m"
+		scorej=$(($scorej + 1))
+	else
+		echo -ne "\n \033[0;33m$joueur2 choice : Scissors\033[0m\n"
+		echo -e "-> \033[0;32mEquality\033[0m"
+	fi
+}
+
+calculscoremulti()
+{
+	if [ "$valuej" == 1 ]; then
+		echo -ne "\n \033[0;33m$joueur1 choice : Rock\033[0m"
+		rockmulti
+
+	elif [ "$valuej" == 2 ]; then
+		echo -ne "\n \033[0;33m$joueur1 choice : Paper\033[0m"
+		papermulti
+	else
+		echo -ne "\n \033[0;33m$joueur1 choice : Scissors\033[0m"
+		scissorsmulti
+	fi
+}
+
+choixmulti(){
+    echo -e "\n\t 1- Rock"
+    echo -e "\t 2- Paper"
+    echo -e "\t 3- Scissors"
+    echo -ne "\n \033[0;33m$joueur1 choice : \033[0m"
+    read -s valuej
+    echo -ne "\n \033[0;34m$joueur2 choice : \033[0m"
+    read -s valuer
+    echo ""
+}

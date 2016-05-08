@@ -1,0 +1,236 @@
+#!/bin/bash
+clear
+. functionshifumi
+. duelshifumi
+. multishifumi
+quit()
+{
+		read -p "Confirm to quit [y/n] : " quit 
+		if [[ "$quit" == y ]]; then
+			echo -e "\n \033[0;36mThanks for playing Bro!\033[0m"
+			echo -e " See you on \033[4;36mrock-paper-scissors.\033[0m\n"
+		elif [[ "$quit" == n ]]; then
+			echo -e "\n Back to the game \n (っ◕‿◕)っ"
+			valuej=0
+		else
+			echo -e " y or n"
+			quit
+		fi
+}
+
+calculscore()
+{
+	number=$[($RANDOM % 3 + 1)]
+	echo -e " \033[0;34mAI's choice : $number\033[0m\n"
+	if [ "$valuej" == 1 ]; then
+		rock
+	elif [ "$valuej" == 2 ]; then
+		paper
+	else
+		scissors
+	fi
+}
+
+init()
+{
+    echo "
+  _____            _      _____                         _____      _                        
+ |  __ \          | |    |  __ \                       / ____|    (_)                       
+ | |__) |___   ___| | __ | |__) |_ _ _ __   ___ _ __  | (___   ___ _ ___ ___  ___  _ __ ___ 
+ |  _  // _ \ / __| |/ / |  ___/ _\` | '_ \ / _ \ '__|  \___ \ / __| / __/ __|/ _ \| '__/ __|
+ | | \ \ (_) | (__|   <  | |  | (_| | |_) |  __/ |     ____) | (__| \__ \__ \ (_) | |  \__ \\
+ |_|  \_\___/ \___|_|\_\ |_|   \__,_| .__/ \___|_|    |_____/ \___|_|___/___/\___/|_|  |___/
+                                    | |                                                     
+                                    |_|                                                     
+"
+    echo -e "\n \tHere we are Dude.. Are you ready to play \033[4;36mShifumi\033[0m ... ?"
+	echo -e " \t\tChoose '\033[0;36mquit\033[0m' to quit the game !"
+	echo -e " \t\t●▬▬▬▬▬▬▬▬▬▬▬▬▬๑۩۩๑▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+	scorej=0
+	valuej=0
+	scorer=0
+}
+
+choixj(){
+    echo -e "\n\t 1- Rock"
+    echo -e "\t 2- Paper"
+    echo -e "\t 3- Scissors"
+    echo -ne "\n \033[0;33mYour choice : \033[0m"
+    read valuej
+    validationchoix
+}
+
+validationchoix(){
+	if [[ $valuej != "quit" ]]; then
+    	read -p "Confirm your choice [y/n] : " choice 
+	    if [[ "$choice" == n ]]; then
+			valuej=0
+		elif [[ "$choice" != y ]]; then
+			echo -e " y OR n"
+			validationchoix
+	    fi
+	fi   
+}
+
+menu(){
+	echo -e "\n\tHey Dude ! Choose your \033[0;36mmod\033[0m to start the \033[4;36mRPS Game\033[0m !"
+	echo -e "\n\t \033[0;34m1- Singleplayer\033[0m"
+    echo -e "\t \033[0;35m2- Multiplayer\033[0m"
+
+    read -p " Choose your mod : " mod
+
+    if [[ $mod == 1 ]]; then
+    	echo -e "\033[0;33mYou choose : Singleplayer\033[0m"
+
+    	echo -e "\n\t \033[0;34m1- Normal\033[0m"
+   		echo -e "\t \033[0;35m2- Duel\033[0m"
+
+   		read -p " Choose your level : " mod1
+    elif [[ $mod == 2 ]]; then
+    	echo -ne "\n \033[0;33mJoueur 1 [ENTER YOUR NAME]: \033[0m";
+		read joueur1;
+		echo -ne " \033[0;34mJoueur 2 [ENTER YOUR NAME]: \033[0m";
+		read joueur2;
+
+		echo -e "\n \033[0;33m$joueur1\033[0m \033[31mVS\033[0m \033[0;34m$joueur2\033[0m";
+    else
+    	echo -e "\t 1 or 2"
+		menu
+	fi
+}
+
+
+reset=0
+while [[ $reset < 1 ]];
+do
+	if [[ $reset == 0 ]]; then
+	init
+	menu
+	fi
+	if [[ $mod == 1 ]]; then
+		if [[ $mod1 == 1 ]]; then
+			re='^[0-9]+$'
+			read -p " Choose number of game to win : " nbrpartie
+			if  [[ $nbrpartie =~ $re ]]; then
+				while [[ "$scorej" != "$nbrpartie" ]] && [[ "$valuej" != "quit" ]];
+				do
+					choixj
+					if [ "$valuej" == 1 ] || [ "$valuej" == 2 ] || [ "$valuej" == 3 ]; then
+						calculscore
+						valuej=0
+						echo -e "   \033[0;31m\033[5mYour score : $scorej \033[0m\n"
+						echo -e "  ●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬๑۩۩๑▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+					elif [[ $valuej == "quit" ]]; then
+						reset=1
+						quit
+					elif [[ $valuej == 0 ]]; then
+						echo -e "\n \033[31m∆ Choose a value !\033[0m"
+					else
+						echo -e "\n \033[31m\033[5m∆ ERROR: Dude, please enter the current value !\033[0m"
+						
+					fi
+				done
+				if [[ "$scorej" == "$nbrpartie" ]]; then
+					reset=1
+					echo -e "\n\033[32m\033[5mYou Won ! \033[0m"
+					choixfinmenu
+				fi
+			else
+				echo -e "\033[31m\033[5m∆ ERROR: Bro! Enter a number of victories required to win the game which is higher than 0 !\033[0m"
+				reset=-1
+			fi
+		elif [[ $mod1 == 2 ]]; then
+			re='^[0-9]+$'
+			read -p "Choose number of game to win : " nbrpartie2
+			if  [[ $nbrpartie2 =~ $re ]]; then
+				while [[ "$scorej" != "$nbrpartie2" ]] && [[ "$valuej" != "quit" ]] && [[ "$scorer" != "$nbrpartie2" ]];
+				do
+					choixj
+					if [ "$valuej" == 1 ] || [ "$valuej" == 2 ] || [ "$valuej" == 3 ]; then
+						calculscore2
+						valuej=0
+						echo -e "   \033[0;31mYour score : $scorej \033[0m"
+						echo -e "   \033[0;31mAI score : $scorer \033[0m\n"
+						echo -e "  ●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬๑۩۩๑▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+					elif [[ $valuej == "quit" ]]; then
+						reset=1
+						quit
+					elif [[ $valuej == 0 ]]; then
+						echo -e "\n \033[31m\033[5m∆ Choose a value !\033[0m"
+					else
+						echo -e "\n \033[31m\033[5m∆ ERROR: Dude, please enter the current value !\033[0m"
+					fi
+				done
+				if [[ "$scorej" == "$nbrpartie2" ]]; then
+					reset=1
+					echo -e "\n\033[32m\033[5mYou Won ! \033[0m"
+					choixfinmenu
+				elif [[ "$scorer" == "$nbrpartie2" ]]; then
+					reset=1
+					echo -e "\n\033[31m\033[5mYou Loose ! \033[0m"
+					choixfinmenu
+				fi
+			else
+				echo -e "\033[31m\033[5m∆ ERROR: Bro! Enter a number of victories required to win the game which is higher than 0 !\033[0m"
+				reset=-1
+			fi
+		else
+			echo -e "\n \033[31m\033[5m∆ ERROR: Dude, please enter the current value !\033[0m"
+			reset=-1
+			menu
+		fi
+	elif [[ $mod == 2 ]]; then
+		re='^[0-9]+$'
+			read -p "Choose number of game to win : " nbrpartie2
+			if  [[ $nbrpartie2 =~ $re ]]; then
+				while [[ "$scorej" != "$nbrpartie2" ]] && [[ "$valuej" != "quit" ]] && [[ "$scorer" != "$nbrpartie2" ]];
+				do
+					choixmulti
+					if [ "$valuej" == 1 ] || [ "$valuej" == 2 ] || [ "$valuej" == 3 ]; then
+						if [ "$valuer" == 1 ] || [ "$valuer" == 2 ] || [ "$valuer" == 3 ]; then
+							calculscoremulti
+							valuej=0
+							valuer=0
+							echo -e "\n\t\033[0;33m$joueur1 score : $scorej \033[0m"
+							echo -e "\t\033[0;34m$joueur2 score : $scorer \033[0m\n"
+							echo -e "  ●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬๑۩۩๑▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+						elif [[ $valuer == "quit" ]]; then
+							reset=1
+							quit
+						elif [[ $valuer == 0 ]]; then
+							echo -e "\n \033[31m\033[5m∆ Choose a value !\033[0m"
+						else	
+							echo -e "\n \033[31m\033[5m∆ ERROR: Dude, please enter the current value !\033[0m"
+						fi
+					elif [[ $valuej == "quit" ]]; then
+						reset=1
+						quit
+					elif [[ $valuej == 0 ]]; then
+						echo -e "\n \033[31m\033[5m∆ Choose a value !\033[0m"
+					else	
+						echo -e "\n \033[31m\033[5m∆ ERROR: Dude, please enter the current value !\033[0m"
+					fi
+				done
+				if [[ "$scorej" == "$nbrpartie2" ]]; then
+					reset=1
+					echo -e "\n \033[0;32m\033[5m$joueur1 is the \033[4;32mWINNER!\033[0m"
+					say -v Agnes "$joueur1 IS THE WINNER!";
+					sleep 0.5;
+					say -v Victoria "$joueur2 You are a LOSER!";
+					echo -e "\n\033[31m\033[5m$joueur2 is a \033[4;31mLOSER!(SHAME ON YOU DUDE!) !\033[0m"
+					choixfinmenu
+				elif [[ "$scorer" == "$nbrpartie2" ]]; then
+					reset=1
+					echo -e "\n \033[0;32m\033[5m$joueur2 is the \033[4;32mWINNER!\033[0m"
+					say -v Agnes "$joueur2 IS A WINNER !";
+					sleep 0.5;
+					say -v Victoria "$joueur1 You are a LOSER!";
+					echo -e "\n\033[31m\033[5m$joueur1 is a \033[4;31mLOSER (SHAME ON YOU DUDE!) !\033[0m"
+					choixfinmenu
+				fi
+			else
+				echo -e "\033[31m\033[5m∆ ERROR: Bro! Enter a number of victories required to win the game which is higher than 0 !\033[0m"
+				reset=-1
+			fi
+	fi
+done

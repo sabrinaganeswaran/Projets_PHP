@@ -1,0 +1,98 @@
+#!/bin/bash
+clear
+. functionshifumi
+quit()
+{
+		read -p "Confirm to quit [y/n] : " quit 
+		if [[ "$quit" == y ]]; then
+			echo -e "\n \033[0;36mThanks for playing Bro!\033[0m"
+			echo -e " See you on \033[4;36mrock-paper-scissors.\033[0m\n"
+		elif [[ "$quit" == n ]]; then
+			echo -e "\n Back to the game \n (っ◕‿◕)っ"
+			valuej=0
+		else
+			echo -e " y or n"
+			quit
+		fi
+}
+
+calculscore()
+{
+	number=$[($RANDOM % 3 + 1)]
+	echo -e " \033[0;34mAI's choice : $number\033[0m\n"
+	if [ "$valuej" == 1 ]; then
+		rock
+	elif [ "$valuej" == 2 ]; then
+		paper
+	else
+		scissors
+	fi
+}
+
+init()
+{
+    echo "
+  _____            _      _____                         _____      _                        
+ |  __ \          | |    |  __ \                       / ____|    (_)                       
+ | |__) |___   ___| | __ | |__) |_ _ _ __   ___ _ __  | (___   ___ _ ___ ___  ___  _ __ ___ 
+ |  _  // _ \ / __| |/ / |  ___/ _\` | '_ \ / _ \ '__|  \___ \ / __| / __/ __|/ _ \| '__/ __|
+ | | \ \ (_) | (__|   <  | |  | (_| | |_) |  __/ |     ____) | (__| \__ \__ \ (_) | |  \__ \\
+ |_|  \_\___/ \___|_|\_\ |_|   \__,_| .__/ \___|_|    |_____/ \___|_|___/___/\___/|_|  |___/
+                                    | |                                                     
+                                    |_|                                                     
+"
+     	echo -e "\n \tHere we are Dude.. Are you ready to play \033[4;36mShifumi\033[0m ... ?"
+	echo -e " \t\tChoose '\033[0;36mquit\033[0m' to quit the game !"
+	echo -e " \t\t●▬▬▬▬▬▬▬▬▬▬▬▬▬๑۩۩๑▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+	scorej=0
+	valuej=0
+}
+
+choixj(){
+    echo -e "\n\t 1- Rock"
+    echo -e "\t 2- Paper"
+    echo -e "\t 3- Scissors"
+    echo -ne "\n \033[0;33mYour choice : \033[0m"
+    read valuej
+    validationchoix
+}
+
+validationchoix(){
+	if [[ $valuej != "quit" ]]; then
+    	read -p "Confirm your choice [y/n] : " choice 
+	    if [[ "$choice" == n ]]; then
+			valuej=0
+		elif [[ "$choice" != y ]]; then
+			echo -e " y or n"
+			validationchoix
+	    fi
+	fi   
+}
+re='^[0-9]+$'
+if  [[ $1 =~ $re ]]; then
+	init
+	while [ "$scorej" != "$1" ] && [[ "$valuej" != "quit" ]];
+	do
+		choixj
+		if [ "$valuej" == 1 ] || [ "$valuej" == 2 ] || [ "$valuej" == 3 ]; then
+			calculscore
+			valuej=0
+			echo -e "   \033[0;31m\033[5mYour score : $scorej \033[0m\n"
+			echo -e "  ●▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬๑۩۩๑▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬●"
+		elif [[ $valuej == "quit" ]]; then
+			quit
+		elif [[ $valuej == 0 ]]; then
+			echo -e "\n \033[31m\033[5m∆ Choose a value !\033[0m"
+		else
+			echo -e "\n \033[31m\033[5m∆ ERROR: Dude, please enter the current value !\033[0m"
+		fi
+	done
+	if [[ "$scorej" == "$1" ]]; then
+	say -v Bells "YOU ARE THE WINNER DUDE !";
+	echo -e "\n\033[32m\033[5mYou Won ! \033[0m"
+	echo -e "See you on \033[4;36mrock-paper-scissors.\033[0m\n"
+fi
+else
+	echo -e "\033[31m\033[5m∆ ERROR: Bro! Enter a number of victories required to win the game which is higher than 0 !\033[0m"
+fi
+
